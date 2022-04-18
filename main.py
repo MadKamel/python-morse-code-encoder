@@ -68,12 +68,17 @@ def formatMMsg(txt):
             output = output + "_"
     return output
 
+
+
 # remember, syntax is as follows:
 #   "C-Q" is CQ                         (the dash is a space between letters)
 #   "S-P-A-C-E_T-H-I-S" is SPACE THIS   (the underscore is a space)
 #
-print(toMorse("T-E-S-T-I-N-G_T-E-S-T-I-N-G"))
+# alternatively, use formatMMsg for ease of use
 
-formatted = formatMMsg("testing testing")
+# demo:
+print(toMorse("M-Y_N-A-M-E_I-S_M-A-D-K-A-M-E-L"))
+
+formatted = formatMMsg("my name is madkamel")
 print(formatted)
 print(toMorse(formatted))
