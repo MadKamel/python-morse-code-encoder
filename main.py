@@ -1,3 +1,4 @@
+import time
 # this table holds morse data
 #   . = wait one unit of time
 #   0 = dot
@@ -16,7 +17,7 @@ morseDefTable = {
 "B"     : "1.0.0.0.",   #   when it's outputted, the letter immediately
 "C"     : "1.0.1.0.",   #   after already has a dot there. if i put it
 "D"     : "1.0.0.",     #   down as 7 or 3 waits, it'd end up being
-"E"     : "1.",         #   8 or 4 in practice.
+"E"     : "0.",         #   8 or 4 in practice.
 "F"     : "0.0.1.0.",
 "G"     : "1.1.0.",     # ex.
 "H"     : "0.0.0.0.",   #   0.1...0.1.......0.1.
@@ -68,17 +69,29 @@ def formatMMsg(txt):
             output = output + "_"
     return output
 
+def fromMorse(morse):
+    for i in range(morse):
+        #listen to stream
+        pass
+
+def playMorse(msg, de):
+    for i in range(len(msg)):
+        if msg[i] == ".":
+            print(".")
+        elif msg[i] == "0":
+            print("Dot!")
+        elif msg[i] == "1":
+            print("Dash!")
+            time.sleep(de*2)
+        time.sleep(de)
+
 
 
 # remember, syntax is as follows:
 #   "C-Q" is CQ                         (the dash is a space between letters)
 #   "S-P-A-C-E_T-H-I-S" is SPACE THIS   (the underscore is a space)
 #
-# alternatively, use formatMMsg for ease of use
-
-# demo:
-print(toMorse("M-Y_N-A-M-E_I-S_M-A-D-K-A-M-E-L"))
-
-formatted = formatMMsg("my name is madkamel")
-print(formatted)
-print(toMorse(formatted))
+while True:
+    morse = toMorse(formatMMsg(input()))
+    print(morse + "\n")
+    playMorse(morse, 0.05)
