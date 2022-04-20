@@ -8,6 +8,8 @@ target_hertz = 20
 #   1 = dash
 #
 # morse chars
+#
+# or just use formatMMsg() if you're feeling like it.
 #   A-Z (you know these)
 #   0-9 (these too)
 #   _   (space between words)
@@ -58,6 +60,8 @@ morseDefTable = {
 def toMorse(txt):
     output = ""
     for i in range(len(txt)):
+        if not txt[i] in morseDefTable:
+            continue
         output = output + morseDefTable[txt[i]]
     return output
 
