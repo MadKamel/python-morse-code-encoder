@@ -1,4 +1,7 @@
 import time
+
+target_hertz = 20
+
 # this table holds morse data
 #   . = wait one unit of time
 #   0 = dot
@@ -10,6 +13,7 @@ import time
 #   _   (space between words)
 #   -   (space between letters)
 #
+
 morseDefTable = {
 "_"    : "......",      # onto new word (7 waits)
 "-"     : "..",         # onto new letter (3 waits)
@@ -50,12 +54,14 @@ morseDefTable = {
 "8"     : "1.1.1.1.0.",
 "9"     : "1.1.1.1.1."}
 
+# Turn formatted Morse to real Morse
 def toMorse(txt):
     output = ""
     for i in range(len(txt)):
         output = output + morseDefTable[txt[i]]
     return output
 
+# Turn text into formatted Morse
 def formatMMsg(txt):
     output = ""
     for i in range(len(txt)):
@@ -69,21 +75,23 @@ def formatMMsg(txt):
             output = output + "_"
     return output
 
-def fromMorse(morse):
-    for i in range(morse):
-        #listen to stream
-        pass
+# Get target delay in secs from given Hz
+def getHzDelay(hz):
+    return 1/hz
 
+# Playback morse message
 def playMorse(msg, de):
+    print("Beginning morse playback")
     for i in range(len(msg)):
         if msg[i] == ".":
-            print(".")
+            print("...")
         elif msg[i] == "0":
             print("Dot!")
         elif msg[i] == "1":
             print("Dash!")
             time.sleep(de*2)
         time.sleep(de)
+    print("Morse over!")
 
 
 
@@ -91,7 +99,10 @@ def playMorse(msg, de):
 #   "C-Q" is CQ                         (the dash is a space between letters)
 #   "S-P-A-C-E_T-H-I-S" is SPACE THIS   (the underscore is a space)
 #
+# or just use formatMMsg() if you're feeling like it.
+#
+# Mainloop:
 while True:
     morse = toMorse(formatMMsg(input()))
     print(morse + "\n")
-    playMorse(morse, 0.05)
+    playMorse(morse, getHzDelay(target_hertz))
