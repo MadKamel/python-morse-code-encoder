@@ -1,112 +1,41 @@
-import time
+morseTable = {
+    "a" : [1, 0, 1, 1, 1],
+    "b" : [1, 1, 1, 0, 1, 0, 1, 0, 1],
+    "c" : [1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1],
+    "d" : [1, 1, 1, 0, 1, 0 ,1],
+    "e" : [1],
+    "f" : [1, 0, 1, 0, 1, 1, 1, 0, 1],
+    "g" : [1, 1, 1, 0, 1, 1, 1, 0, 1],
+    "h" : [1, 0, 1, 0, 1, 0, 1],
+    "i" : [1, 0, 1],
+    "j" : [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1],
+    "k" : [1, 1, 1, 0, 1, 0, 1, 1, 1],
+    "l" : [1, 0, 1, 1, 1, 0, 1, 0, 1],
+    "m" : [1, 1, 1, 0, 1, 1, 1],
+    "n" : [1, 1, 1, 0, 1],
+    "o" : [1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1],
+    "p" : [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1],
+    "q" : [1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1],
+    "r" : [1, 0, 1, 1, 1, 0, 1],
+    "s" : [1, 0, 1, 0, 1],
+    "t" : [1, 1, 1],
+    "u" : [1, 0, 1, 0, 1, 1, 1],
+    "v" : [1, 0, 1, 0, 1, 0, 1, 1, 1],
+    "w" : [1, 0, 1, 1, 1, 0, 1, 1, 1],
+    "x" : [1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1],
+    "y" : [1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1],
+    "z" : [1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1],
+    "-" : [0, 0, 0],
+    " " : [0, 0, 0, 0, 0, 0, 0]
+}
 
-target_hertz = 20
-
-# this table holds morse data
-#   . = wait one unit of time
-#   0 = dot
-#   1 = dash
-#
-# morse chars
-#
-# or just use formatMMsg() if you're feeling like it.
-#   A-Z (you know these)
-#   0-9 (these too)
-#   _   (space between words)
-#   -   (space between letters)
-#
-
-morseDefTable = {
-"_"    : "......",      # onto new word (7 waits)
-"-"     : "..",         # onto new letter (3 waits)
-"A"     : "0.1.",       # i put _ down as 6 waits and - as 2 because
-"B"     : "1.0.0.0.",   #   when it's outputted, the letter immediately
-"C"     : "1.0.1.0.",   #   after already has a dot there. if i put it
-"D"     : "1.0.0.",     #   down as 7 or 3 waits, it'd end up being
-"E"     : "0.",         #   8 or 4 in practice.
-"F"     : "0.0.1.0.",
-"G"     : "1.1.0.",     # ex.
-"H"     : "0.0.0.0.",   #   0.1...0.1.......0.1.
-"I"     : "0.0.",       #
-"J"     : "0.1.1.1.",   # this is the correct way to do it.
-"K"     : "1.0.1.",
-"L"     : "0.1.0.0.",
-"M"     : "1.1.",
-"N"     : "1.0.",
-"O"     : "1.1.1.",
-"P"     : "0.1.1.0.",
-"Q"     : "1.1.0.1.",
-"R"     : "0.1.0.",
-"S"     : "0.0.0.",
-"T"     : "1.",
-"U"     : "0.0.1.",
-"V"     : "0.0.0.1.",
-"W"     : "0.1.1.",
-"X"     : "1.0.0.1.",
-"Y"     : "1.0.1.1",
-"Z"     : "1.1.0.0.",
-"0"     : "0.1.1.1.1.",
-"1"     : "0.0.1.1.1.",
-"2"     : "0.0.0.1.1.",
-"3"     : "0.0.0.0.1.",
-"4"     : "0.0.0.0.0.",
-"5"     : "1.0.0.0.0.",
-"6"     : "1.1.0.0.0.",
-"7"     : "1.1.1.0.0.",
-"8"     : "1.1.1.1.0.",
-"9"     : "1.1.1.1.1."}
-
-# Turn formatted Morse to real Morse
-def toMorse(txt):
-    output = ""
-    for i in range(len(txt)):
-        if not txt[i] in morseDefTable:
-            continue
-        output = output + morseDefTable[txt[i]]
+def toMorse(text):
+    '''This function will take plaintext and attempt to encode it into morse code.'''
+    output = []
+    for i in range(len(text)):
+        if text[i] in morseTable:
+            output = output + morseTable[text[i]]
     return output
 
-# Turn text into formatted Morse
-def formatMMsg(txt):
-    output = ""
-    for i in range(len(txt)):
-        if not txt[i] == " ":
-            output = output + txt[i].upper()
-            if i == len(txt)-1:                 # i honestly don't know how this works
-                pass                            # i'm sorry
-            elif not txt[i+1] == " ":
-                output = output + "-"
-        else:
-            output = output + "_"
-    return output
-
-# Get target delay in secs from given Hz
-def getHzDelay(hz):
-    return 1/hz
-
-# Playback morse message
-def playMorse(msg, de):
-    print("Beginning morse playback")
-    for i in range(len(msg)):
-        if msg[i] == ".":
-            print("...")
-        elif msg[i] == "0":
-            print("Dot!")
-        elif msg[i] == "1":
-            print("Dash!")
-            time.sleep(de*2)
-        time.sleep(de)
-    print("Morse over!")
-
-
-
-# remember, syntax is as follows:
-#   "C-Q" is CQ                         (the dash is a space between letters)
-#   "S-P-A-C-E_T-H-I-S" is SPACE THIS   (the underscore is a space)
-#
-# or just use formatMMsg() if you're feeling like it.
-#
-# Mainloop:
 while True:
-    morse = toMorse(formatMMsg(input()))
-    print(morse + "\n")
-    playMorse(morse, getHzDelay(target_hertz))
+    print(toMorse(input()))
